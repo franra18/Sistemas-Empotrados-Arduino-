@@ -20,12 +20,14 @@ float celsius(float sensorValue) {
 }
 
 void loop() {
-  sensorValue = analogRead(sensorPin);
+  
 
   unsigned long num = millis();
 
   if (num - ultimaLectura >= periodoLectura) {
-    if (celsius(sensorValue) >= 36 && celsius(sensorValue) >= 40) {
+    sensorValue = analogRead(sensorPin);
+    ultimaLectura += periodoLectura;
+    if (celsius(sensorValue) >= 36 && celsius(sensorValue) <= 40) {
       digitalWrite(pinLed, HIGH);
     } else {
       digitalWrite(pinLed, LOW);
