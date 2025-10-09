@@ -50,19 +50,22 @@ void loop()
   if(num - ultimaLectura >= periodoLectura) { //Leemos la temperatura cada 1000 ms para ver si esta dentro del rango e imprimirla por pantalla
     sensorValue = analogRead(pinTemp);
     ultimaLectura += periodoLectura;
-    if (celsius(sensorValue) >= 4 && celsius(sensorValue) <= 8) { // El 4 y el 8 serían 36 y 40
+    if (celsius(sensorValue) >= 36 && celsius(sensorValue) <= 40) {
       digitalWrite(pinVerde, HIGH);
     } else {
       digitalWrite(pinVerde, LOW);
     }
+    Serial.print("Temperatura: ");
     Serial.print(celsius(sensorValue));
-    Serial.print(" ");
-    Serial.println(digitalRead(pinRojo) == HIGH? 1 : 0);
+    Serial.print("ºC  Estado Secador: ");
+    Serial.print(digitalRead(pinNPN) == HIGH ? "Encendido" : "Apagado");
+    Serial.print("  PID: ");
+    Serial.println(PID);
   }
   
   if(num - ultimoControl >= periodoControl){ //Cada periodo de 5000 ms calculamos el error y controlamos el secador y el led Rojo
     ultimoControl += periodoControl;
-    error = 6 - celsius(sensorValue);
+    error = 38 - celsius(sensorValue);
 	integral = integral + (error * periodoControl * 1e-3);
 	derivative = (error - prev_error) / (periodoControl * 1e-3);
 	PID = Kp * error + Ki * integral + Kd * derivative;

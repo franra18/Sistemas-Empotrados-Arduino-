@@ -40,19 +40,20 @@ void loop()
   if(num - ultimaLectura >= periodoLectura) {
     sensorValue = analogRead(pinTemp);
     ultimaLectura += periodoLectura;
-    if (celsius(sensorValue) >= 4 && celsius(sensorValue) <= 8) { // El 4 y el 8 serían 36 y 40
+    if (celsius(sensorValue) >= 36 && celsius(sensorValue) <= 40) { // El 4 y el 8 serían 36 y 40
       digitalWrite(pinVerde, HIGH);
     } else {
       digitalWrite(pinVerde, LOW);
     }
+    Serial.print("Temperatura: ");
     Serial.print(celsius(sensorValue));
-    Serial.print(" ");
-    Serial.println(digitalRead(pinRojo) == HIGH? 1 : 0);
+    Serial.print("ºC  Estado Secador: ");
+    Serial.println(digitalRead(pinNPN) == HIGH ? "Encendido" : "Apagado");
   }
   
   if(num - ultimoControl >= periodoControl){
     ultimoControl += periodoControl;
-    if(celsius(sensorValue) < 6){ // El 6 sería el 38
+    if(celsius(sensorValue) < 38){ 
       digitalWrite(pinRojo, HIGH);
       digitalWrite(pinNPN, HIGH);
     } else {
